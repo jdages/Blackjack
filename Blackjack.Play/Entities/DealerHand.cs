@@ -2,13 +2,13 @@
 
 namespace Blackjack.Play.Entities
 {
-    public class PlayerHand
+    public class DealerHand
     {
         private List<Card> Cards = new List<Card>();
 
-        public PlayerHand()
+        public DealerHand()
         {
             
-        }
+        }         
     }
 }
