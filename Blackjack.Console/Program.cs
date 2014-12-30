@@ -17,8 +17,7 @@ namespace Blackjack.Console
             for (var x = 0; x < 52; x++)
             {
                 var cardFromShoe = shoe.GetCardFromShoe();
-                output += cardFromShoe.CardDescription() +
-                    "\n";
+                output += cardFromShoe.CardDescription() + "\n";
                 System.Console.WriteLine(cardFromShoe.CardDescription());
             }
             File.WriteAllText("c:\\deploy\\cards.txt", output);

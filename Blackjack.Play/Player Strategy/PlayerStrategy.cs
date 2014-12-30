@@ -2,6 +2,6 @@
 {
     public abstract class PlayerStrategy
     {
-        public bool HitSoftSeventeen { get; private set; } 
+        public virtual bool HitSixteen { get { return true; } } 
     }
 }
