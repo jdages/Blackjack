@@ -9,10 +9,10 @@ namespace Blackjack.Play.Entities
         private Shoe _shoe;
         private List<Player> _players;
         private DealerStrategy _dealerStrategy;
-        private List<Card> _dealerCards = new List<Card>();
+        private DealerHand _hand = new DealerHand();
         private Dictionary<Player, List<Card>> _playerCards = new Dictionary<Player, List<Card>>();
 
-        Card DealerShowCard { get { return _dealerCards[1]; } }
+        Card DealerShowCard { get { return _hand.GetShowCard(); } }
 
         public Game(Shoe shoe, List<Player> players, DealerStrategy dealerStrategy)
         {
@@ -35,8 +35,8 @@ namespace Blackjack.Play.Entities
 
         private void DealerBlackjack()
         {
-            if (_dealerCards.Any(a => a.IsAce) && _dealerCards.Any(a => a.Value == 10))
-                _players.ForEach(a => a.CompleteHand(_dealerCards.c));
+            if (_hand.IsBlackjack())
+                _players.ForEach(a => a.CompleteHand(_hand));
 
         }
 
@@ -54,12 +54,12 @@ namespace Blackjack.Play.Entities
             foreach (var player in _players)
                 _playerCards.Add(player, new List<Card> { _shoe.GetCardFromShoe() });
 
-            _dealerCards.Add(_shoe.GetCardFromShoe());
+            _hand.AddCard(_shoe.GetCardFromShoe());
 
             foreach (var player in _players)
                 _playerCards[player].Add(_shoe.GetCardFromShoe());
 
-            _dealerCards.Add(_shoe.GetCardFromShoe());
+            _hand.AddCard(_shoe.GetCardFromShoe());
         }
     }
 

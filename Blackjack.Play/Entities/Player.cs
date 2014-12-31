@@ -24,5 +24,10 @@ namespace Blackjack.Play.Entities
                 
             }
         }
+
+        public void CompleteHand(DealerHand hand)
+        {
+            
+        }
     }
 }
