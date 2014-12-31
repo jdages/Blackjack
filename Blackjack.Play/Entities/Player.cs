@@ -8,6 +8,7 @@ namespace Blackjack.Play.Entities
 
         public string Name { get; set; }
         public PlayerStrategy Strategy { get; private set; }
+        public decimal Outcomes { get; set; }
 
         public Player(PlayerStrategy strategy, string name = "Unknown")
         {
@@ -15,6 +16,13 @@ namespace Blackjack.Play.Entities
             Name = name;
         }
 
-        
+
+        public void OfferInsurance()
+        {
+            if (Strategy.TakesInsurance)
+            {
+                
+            }
+        }
     }
 }

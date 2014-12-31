@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace Blackjack.Play.Entities
+﻿namespace Blackjack.Play.Entities
 {
-    public class PlayerHand
+
+    public class PlayerHand : Hand
     {
-        private List<Card> Cards = new List<Card>();
 
         public PlayerHand()
         {

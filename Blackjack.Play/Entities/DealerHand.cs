@@ -2,10 +2,8 @@
 
 namespace Blackjack.Play.Entities
 {
-    public class DealerHand
+    public class DealerHand : Hand
     {
-        private List<Card> Cards = new List<Card>();
-
         public DealerHand()
         {
             
