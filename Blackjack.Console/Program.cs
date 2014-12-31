@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Blackjack.Play.Dealer_Strategy;
 using Blackjack.Play.Entities;
+using Blackjack.Play.Player_Strategy;
 
 namespace Blackjack.Console
 {
@@ -13,13 +15,12 @@ namespace Blackjack.Console
         static void Main(string[] args)
         {
             string output = string.Empty;
-            var shoe = new Shoe(1);
-            for (var x = 0; x < 52; x++)
-            {
-                var cardFromShoe = shoe.GetCardFromShoe();
-                output += cardFromShoe.CardDescription() + "\n";
-                System.Console.WriteLine(cardFromShoe.CardDescription());
-            }
+            var shoe = new Shoe(3);
+
+            var game = new Game(shoe, new List<Player> {new Player(new TraditionalStrategy(), "Dages")},
+                new VegasStrategy());
+            game.Play();
+
             File.WriteAllText("c:\\deploy\\cards.txt", output);
             System.Console.ReadKey();
 

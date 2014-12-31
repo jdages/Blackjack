@@ -15,5 +15,6 @@ namespace Blackjack.Play.Entities
             Name = name;
         }
 
+        
     }
 }

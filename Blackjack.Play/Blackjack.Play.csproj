@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dealer Strategy\DealerStrategy.cs" />
+    <Compile Include="Dealer Strategy\VegasStrategy.cs" />
     <Compile Include="Entities\AllCard.cs" />
     <Compile Include="Entities\Card.cs" />
     <Compile Include="Entities\DealerHand.cs" />

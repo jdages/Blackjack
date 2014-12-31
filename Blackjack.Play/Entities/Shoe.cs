@@ -7,16 +7,16 @@ namespace Blackjack.Play.Entities
 {
     public class Shoe
     {
+        private int _decksInShoe;
         private List<Card> _allCards;
         private static Random random = new Random();
         public Shoe(int numberOfDecksInShoe)
         {
+            _decksInShoe = numberOfDecksInShoe;
             _allCards = new List<Card>();
-            //List<Deck> decks = new List<Deck>();
             for (var x = 0; x < numberOfDecksInShoe; x++)
                 _allCards.AddRange(Card.GetAllCards().ToList());
 
-            //_allCards = decks.SelectMany(a => a.GetAllCardsInDeck()).ToList();
         }
 
         public Card GetCardFromShoe()
@@ -27,6 +27,11 @@ namespace Blackjack.Play.Entities
 
         }
 
+        public bool IsDead()
+        {
+            var twoThirdsPenetration = _decksInShoe*52*(1/3);
+            return _allCards.Count() < twoThirdsPenetration;
+        }
     }
     public static class CardExtensions
     {
