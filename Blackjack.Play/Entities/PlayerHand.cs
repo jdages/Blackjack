@@ -1,18 +1,27 @@
-﻿namespace Blackjack.Play.Entities
+﻿using Blackjack.Play.Player_Strategy;
+
+namespace Blackjack.Play.Entities
 {
 
     public class PlayerHand : Hand
     {
-
-        public PlayerHand()
+        public bool IsComplete(PlayerStrategy strategy, Card dealerCard)
         {
-            
-        }
-
-        public bool IsComplete()
-        {
-            if (!IsSoft() && Value() >= 17)
+            var playerValue = Value();
+            var dealerShowValue = dealerCard.Value;
+            if (!IsSoft() && playerValue >= 17)
                 return true;
+
+            if (IsSoft() && playerValue == 17)
+                return !strategy.HitSoftSeventeen;
+
+            if (dealerShowValue >= 2 && dealerShowValue <= 6)
+            {
+                if (playerValue >= 12)
+                    return true;
+            }
+
+
             return false;
         }
     }

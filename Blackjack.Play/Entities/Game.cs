@@ -34,6 +34,7 @@ namespace Blackjack.Play.Entities
                 Deal();
                 OfferInsurance();
                 DealerBlackjack();
+                PlayerBlackJack();
                 CompletePlayerHands();
                 CompleteDealerHands();
                 DetermineOutcomes();
@@ -43,6 +44,18 @@ namespace Blackjack.Play.Entities
                 hands++;
             }
             return CalculateOutcomes(hands);
+        }
+
+        private void PlayerBlackJack()
+        {
+            foreach (var player in _players)
+            {
+                if (_playerCards[player].IsBlackjack())
+                {
+                    _playerCards[player].WonBlackjack = true;
+                    _playerCards[player].Kill();
+                }
+            }
         }
 
         private void CalculateIntermediateOutcomes()
@@ -60,6 +73,7 @@ namespace Blackjack.Play.Entities
             result.TotalWins = _playerWins;
             result.TotalLosses = _playerLosses;
             result.TotalPushes = _playerPushes;
+            result.TotalWinAmount = _players.Sum(a => a.BankRoll);
             return result;
         }
 
@@ -71,7 +85,15 @@ namespace Blackjack.Play.Entities
 
         private void Pay()
         {
-            
+            foreach (var player in _players)
+            {
+                if(_playerCards[player].Outcome == HandOutcomes.Push)
+                    player.AwardPlayer(1);
+                if (_playerCards[player].Outcome == HandOutcomes.Winner && !_playerCards[player].IsDoubled)
+                    player.AwardPlayer(2);
+                if(_playerCards[player].WonBlackjack)
+                    player.AwardPlayer(.5m);
+            }
 
         }
 
@@ -83,7 +105,7 @@ namespace Blackjack.Play.Entities
 
         private void CompleteDealerHands()
         {
-            if (_playerCards.All(a => a.Value.IsBusted()))
+            if (_playerCards.All(a => a.Value.IsBusted() || a.Value.IsKilled))
                 return;
             while (!_dealerHand.IsComplete())
                 _dealerHand.AddCard(_shoe.GetCardFromShoe());
@@ -94,8 +116,10 @@ namespace Blackjack.Play.Entities
             foreach (var player in _players)
             {
                 var hand = _playerCards[player];
-                while (!hand.IsComplete() && !hand.IsKilled)
+                while (!hand.IsKilled && !hand.IsComplete(player.Strategy,_dealerHand.GetShowCard()))
                     hand.AddCard(_shoe.GetCardFromShoe());
+                if (hand.IsBusted())
+                    hand.Kill();
             }
         }
 

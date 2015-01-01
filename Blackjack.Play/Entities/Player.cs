@@ -33,8 +33,7 @@ namespace Blackjack.Play.Entities
 
         public void AwardPlayer(decimal winnings)
         {
-            BankRoll 
-                += winnings;
+            BankRoll += winnings;
         }
     }
 }

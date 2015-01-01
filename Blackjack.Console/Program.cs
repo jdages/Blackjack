@@ -14,13 +14,17 @@ namespace Blackjack.Console
     {
         static void Main(string[] args)
         {
-            string output = string.Empty;
-            var shoe = new Shoe(8);
+            
+            var allOutcomes = new List<GameResult>();
+            for (var x = 0; x < 5000; x++)
+            {
+                var shoe = new Shoe(8);
 
-            var game = new Game(shoe, new List<Player> {new Player(new TraditionalStrategy(), "Dages")},
-                new VegasStrategy());
-            GameResult result = game.Play();
-            System.Console.WriteLine(result.ToString());
+                var game = new Game(shoe, new List<Player> { new Player(new TraditionalStrategy(), "Dages") },
+                    new VegasStrategy());    
+                allOutcomes.Add(game.Play());
+            }
+            System.Console.WriteLine(allOutcomes.CollectedOutcomes());
             System.Console.ReadKey();
 
         }

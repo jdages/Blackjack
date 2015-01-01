@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 
@@ -7,7 +8,8 @@ namespace Blackjack.Play.Entities
     public abstract class Hand
     {
         protected List<Card> Cards = new List<Card>();
-
+        public bool IsDoubled { get; set; }
+        public bool WonBlackjack { get; set; }
         protected bool OutcomeAssigned;
         public HandOutcomes Outcome { get; set; }
         public bool IsKilled { get; set; }
@@ -47,13 +49,17 @@ namespace Blackjack.Play.Entities
             {
                 Outcome = HandOutcomes.Loser;
             }
-            if (dealerCount == Value())
+            else if (dealerCount == Value())
             {
                 Outcome = HandOutcomes.Push;
             }
-            if (dealerCount < Value())
+            else if (dealerCount < Value())
             {
                 Outcome = HandOutcomes.Winner;
+            }
+            else
+            {
+                throw new Exception();
             }
             OutcomeAssigned = true;
         }
@@ -61,6 +67,7 @@ namespace Blackjack.Play.Entities
         public void Kill()
         {
             IsKilled = true;
+            Outcome = HandOutcomes.Loser;
         }
 
     }
