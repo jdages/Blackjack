@@ -8,7 +8,7 @@ namespace Blackjack.Play.Entities
 
         public string Name { get; set; }
         public PlayerStrategy Strategy { get; private set; }
-        public decimal Outcomes { get; set; }
+        public decimal BankRoll { get; set; }
 
         public Player(PlayerStrategy strategy, string name = "Unknown")
         {
@@ -25,9 +25,16 @@ namespace Blackjack.Play.Entities
             }
         }
 
-        public void CompleteHand(DealerHand hand)
+
+        public void ChargePlayer(decimal charge)
         {
-            
+            BankRoll -= charge;
+        }
+
+        public void AwardPlayer(decimal winnings)
+        {
+            BankRoll 
+                += winnings;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Blackjack.Console
         static void Main(string[] args)
         {
             string output = string.Empty;
-            var shoe = new Shoe(3);
+            var shoe = new Shoe(300);
 
             var game = new Game(shoe, new List<Player> {new Player(new TraditionalStrategy(), "Dages")},
                 new VegasStrategy());

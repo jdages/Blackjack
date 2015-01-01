@@ -1,13 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 
 namespace Blackjack.Play.Entities
 {
-    public class Hand
+    public abstract class Hand
     {
         protected List<Card> Cards = new List<Card>();
 
-        public int HandValue()
+        protected bool OutcomeAssigned;
+        public HandOutcomes Outcome { get; set; }
+        public bool IsKilled { get; set; }
+
+        public int Value()
         {
             var count = Cards.Sum(a => a.Value);
             if (count <= 11 && Cards.Any(a => a.IsAce))
@@ -22,8 +27,48 @@ namespace Blackjack.Play.Entities
         }
         public bool IsBusted()
         {
-            return HandValue() > 21;
+            return Value() > 21;
         }
 
+        public bool IsBlackjack()
+        {
+            return Cards.Any(a => a.IsAce) && Cards.Any(a => a.Value == 10);
+        }
+
+        public void AddCard(Card newCard)
+        {
+            Cards.Add(newCard);
+        }
+
+        public virtual void AwardOutcomes(int dealerCount)
+        {
+            if (OutcomeAssigned) return;
+            if (dealerCount > Value() || IsBusted())
+            {
+                Outcome = HandOutcomes.Loser;
+            }
+            if (dealerCount == Value())
+            {
+                Outcome = HandOutcomes.Push;
+            }
+            if (dealerCount < Value())
+            {
+                Outcome = HandOutcomes.Winner;
+            }
+            OutcomeAssigned = true;
+        }
+
+        public void Kill()
+        {
+            IsKilled = true;
+        }
+
+    }
+
+    public enum HandOutcomes
+    {
+        Winner,
+        Loser,
+        Push
     }
 }
