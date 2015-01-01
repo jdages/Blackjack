@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Blackjack.Play.Dealer_Strategy;
@@ -12,6 +13,9 @@ namespace Blackjack.Play.Entities
         private DealerStrategy _dealerStrategy;
         private DealerHand _dealerHand = new DealerHand();
         private Dictionary<Player, PlayerHand> _playerCards = new Dictionary<Player, PlayerHand>();
+        private int _playerWins;
+        private int _playerLosses;
+        private int _playerPushes;
 
         Card DealerShowCard { get { return _dealerHand.GetShowCard(); } }
 
@@ -22,8 +26,9 @@ namespace Blackjack.Play.Entities
             _shoe = shoe;
         }
 
-        public void Play()
+        public GameResult Play()
         {
+            var hands = 0;
             while (!_shoe.IsDead())
             {
                 Deal();
@@ -33,8 +38,29 @@ namespace Blackjack.Play.Entities
                 CompleteDealerHands();
                 DetermineOutcomes();
                 Pay();
+                CalculateIntermediateOutcomes();
                 ClearHands();
+                hands++;
             }
+            return CalculateOutcomes(hands);
+        }
+
+        private void CalculateIntermediateOutcomes()
+        {
+            _playerWins += _playerCards.Count(a => a.Value.Outcome == HandOutcomes.Winner);
+            _playerLosses += _playerCards.Count(a => a.Value.Outcome == HandOutcomes.Loser);
+            _playerPushes += _playerCards.Count(a => a.Value.Outcome == HandOutcomes.Push);
+        }
+
+        private GameResult CalculateOutcomes(int hands)
+        {
+            var result = new GameResult();
+            result.DecksInShoe = _shoe.DecksInShoe;
+            result.TotalHands = hands;
+            result.TotalWins = _playerWins;
+            result.TotalLosses = _playerLosses;
+            result.TotalPushes = _playerPushes;
+            return result;
         }
 
         private void ClearHands()

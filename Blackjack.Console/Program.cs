@@ -15,13 +15,12 @@ namespace Blackjack.Console
         static void Main(string[] args)
         {
             string output = string.Empty;
-            var shoe = new Shoe(300);
+            var shoe = new Shoe(8);
 
             var game = new Game(shoe, new List<Player> {new Player(new TraditionalStrategy(), "Dages")},
                 new VegasStrategy());
-            game.Play();
-
-            File.WriteAllText("c:\\deploy\\cards.txt", output);
+            GameResult result = game.Play();
+            System.Console.WriteLine(result.ToString());
             System.Console.ReadKey();
 
         }

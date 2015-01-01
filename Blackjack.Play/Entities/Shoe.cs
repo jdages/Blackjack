@@ -7,12 +7,12 @@ namespace Blackjack.Play.Entities
 {
     public class Shoe
     {
-        private int _decksInShoe;
+        public int DecksInShoe { get; set; }
         private List<Card> _allCards;
         private static Random random = new Random();
         public Shoe(int numberOfDecksInShoe)
         {
-            _decksInShoe = numberOfDecksInShoe;
+            DecksInShoe = numberOfDecksInShoe;
             _allCards = new List<Card>();
             for (var x = 0; x < numberOfDecksInShoe; x++)
                 _allCards.AddRange(Card.GetAllCards().ToList());
@@ -29,7 +29,7 @@ namespace Blackjack.Play.Entities
 
         public bool IsDead()
         {
-            var twoThirdsPenetration = _decksInShoe*52*(1/3);
+            var twoThirdsPenetration = (int)((decimal)DecksInShoe*(decimal)52*((decimal)1/(decimal)3));
             return _allCards.Count() < twoThirdsPenetration;
         }
     }
