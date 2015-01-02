@@ -1,7 +1,11 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Text;
 using Blackjack.Play.Dealer_Strategy;
 
 namespace Blackjack.Play.Entities
@@ -13,6 +17,7 @@ namespace Blackjack.Play.Entities
         private DealerStrategy _dealerStrategy;
         private DealerHand _dealerHand = new DealerHand();
         private Dictionary<Player, PlayerHand> _playerCards = new Dictionary<Player, PlayerHand>();
+        private Dictionary<Player, decimal> _beginningBalances = new Dictionary<Player, decimal>();
         private int _playerWins;
         private int _playerLosses;
         private int _playerPushes;
@@ -31,6 +36,7 @@ namespace Blackjack.Play.Entities
             var hands = 0;
             while (!_shoe.IsDead())
             {
+                SetBeginningBalance();
                 Deal();
                 OfferInsurance();
                 DealerBlackjack();
@@ -40,11 +46,54 @@ namespace Blackjack.Play.Entities
                 DetermineOutcomes();
                 Pay();
                 CalculateIntermediateOutcomes();
+                ReportOutcomes();
                 ClearHands();
                 hands++;
             }
             return CalculateOutcomes(hands);
         }
+
+        private void SetBeginningBalance()
+        {
+            _beginningBalances = new Dictionary<Player, decimal>();
+            foreach (var player in _players)
+                _beginningBalances.Add(player,player.BankRoll);
+        }
+
+        private void ReportOutcomes()
+        {
+            if (!bool.Parse(ConfigurationManager.AppSettings["WriteOutcomesToDisk"]))
+                return;
+            var sb = new StringBuilder();
+
+            sb.AppendLine("Dealer has: " + _dealerHand.CardNames());
+            _players.ForEach(a => sb.AppendLine("Player " + a.Name + " has: " + _playerCards[a].CardNames()));
+            sb.AppendLine("Dealer total: " + _dealerHand.Value());
+            _players.ForEach(a => sb.AppendLine(PrintOutcomesToConsole(a)));
+            _players.ForEach(a=> sb.AppendLine(string.Format("Player {0} began with {1} and ended with {2}", a.Name,_beginningBalances[a],a.BankRoll)));
+            sb.AppendLine("----");
+            File.AppendAllText("c:\\deploy\\lol.txt", sb.ToString());
+            //            Console.Write(sb);
+        }
+
+        private string PrintOutcomesToConsole(Player player)
+        {
+            var outcomeText = "(" + player.BankRoll + ") ";
+
+            var cards = _playerCards[player];
+            if (cards.Outcome == HandOutcomes.Winner)
+                outcomeText += "Player " + (cards.IsDoubled ? " (DOUBLE) " : string.Empty) + player.Name + " WINS with " + cards.Value() + " versus " + _dealerHand.Value();
+
+            if (cards.Outcome == HandOutcomes.Push)
+                outcomeText += "Player " + (cards.IsDoubled ? " (DOUBLE) " : string.Empty) + player.Name + " PUSHES with " + cards.Value() + " versus " + _dealerHand.Value();
+
+            if (cards.Outcome == HandOutcomes.Loser)
+                outcomeText += "Player " + (cards.IsDoubled ? " (DOUBLE) " : string.Empty) + player.Name + " LOSES with " + cards.Value() + " versus " + _dealerHand.Value();
+
+
+            return outcomeText;
+        }
+
 
         private void PlayerBlackJack()
         {
@@ -53,6 +102,7 @@ namespace Blackjack.Play.Entities
                 if (_playerCards[player].IsBlackjack())
                 {
                     _playerCards[player].WonBlackjack = true;
+                    player.AwardPlayer(2.5m);
                     _playerCards[player].Kill();
                 }
             }
@@ -90,18 +140,15 @@ namespace Blackjack.Play.Entities
                 if (_playerCards[player].Outcome == HandOutcomes.Push)
                 {
                     player.AwardPlayer(1);
-                    if(_playerCards[player].IsDoubled)
+                    if (_playerCards[player].IsDoubled)
                         player.AwardPlayer(1);
                 }
-                if (_playerCards[player].Outcome == HandOutcomes.Winner)
+                if (_playerCards[player].Outcome == HandOutcomes.Winner && !_playerCards[player].WonBlackjack)
                 {
                     player.AwardPlayer(2);
-                    if(!_playerCards[player].IsDoubled)
-                        player.AwardPlayer(1);
+                    if (_playerCards[player].IsDoubled)
+                        player.AwardPlayer(2);
                 }
-
-                if(_playerCards[player].WonBlackjack)
-                    player.AwardPlayer(.5m);
             }
 
         }
@@ -167,18 +214,18 @@ namespace Blackjack.Play.Entities
             {
                 player.ChargePlayer(1m);
                 var newHand = new PlayerHand();
-                newHand.AddCard(_shoe.GetCardFromShoe(false,true));
+                newHand.AddCard(_shoe.GetCardFromShoe(false, true));
                 _playerCards.Add(player, newHand);
             };
 
-            _dealerHand.AddCard(_shoe.GetCardFromShoe(true,true));
+            _dealerHand.AddCard(_shoe.GetCardFromShoe(true, true));
 
             foreach (var player in _players)
             {
-                _playerCards[player].AddCard(_shoe.GetCardFromShoe(false,false));
+                _playerCards[player].AddCard(_shoe.GetCardFromShoe(false, false));
             }
 
-            _dealerHand.AddCard(_shoe.GetCardFromShoe(true,false));
+            _dealerHand.AddCard(_shoe.GetCardFromShoe(true, false));
         }
     }
 

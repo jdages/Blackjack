@@ -22,6 +22,14 @@ namespace Blackjack.Play.Entities
             return count;
         }
 
+        public string CardNames()
+        {
+            var cardNames = "(" + Value() + ") ";
+            Cards.ForEach(a=>cardNames += (a.IsAce ? "A" : a.Value.ToString()) + ", " );
+            cardNames = cardNames.Remove(cardNames.Length - 2);
+            return cardNames;
+        }
+
         public bool IsSoft()
         {
             return Cards.Sum(a => a.Value) <= 11 && Cards.Any(a => a.IsAce);
@@ -45,7 +53,7 @@ namespace Blackjack.Play.Entities
         public virtual void AwardOutcomes(int dealerCount)
         {
             if (OutcomeAssigned) return;
-            if (dealerCount > Value() || IsBusted() || dealerCount > 21)
+            if ((dealerCount > Value() || IsBusted()) && dealerCount <= 21)
             {
                 Outcome = HandOutcomes.Loser;
             }

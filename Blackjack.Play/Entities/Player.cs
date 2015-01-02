@@ -8,12 +8,13 @@ namespace Blackjack.Play.Entities
 
         public string Name { get; set; }
         public PlayerStrategy Strategy { get; private set; }
-        public decimal BankRoll { get; set; }
+        public decimal BankRoll { get; private set; }
 
-        public Player(PlayerStrategy strategy, string name = "Unknown")
+        public Player(PlayerStrategy strategy, string name = "Unknown", decimal startingBalance = 0)
         {
             Strategy = strategy;
             Name = name;
+            BankRoll = startingBalance;
         }
 
 
