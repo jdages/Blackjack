@@ -24,5 +24,43 @@ namespace Blackjack.Play.Entities
 
             return false;
         }
+
+        public bool IsDouble(PlayerStrategy strategy, Card showCard)
+        {
+            var playerValue = this.Value();
+            var dealerValue = showCard.Value;
+            if (playerValue == 11 && !showCard.IsAce)
+                return true;
+            if (playerValue == 10)
+            {
+                return dealerValue != 10 && !showCard.IsAce;
+            }
+            if (playerValue == 9)
+            {
+                return dealerValue == 3 || dealerValue == 4 || dealerValue == 5 || dealerValue == 6;
+            }
+            if ((playerValue == 18 || playerValue == 17) && IsSoft())
+            {
+                return dealerValue == 3 || dealerValue == 4 || dealerValue == 5 || dealerValue == 6;
+            }
+            if ((playerValue == 16 || playerValue == 15) && IsSoft())
+            {
+                return dealerValue == 4 || dealerValue == 5 || dealerValue == 6;
+            }
+            if ((playerValue == 14 || playerValue == 13) && IsSoft())
+            {
+                return dealerValue == 5 || dealerValue == 6;
+            }
+
+            return false;
+
+
+            return false;
+        }
+
+        public void Double()
+        {
+            IsDoubled = true;
+        }
     }
 }

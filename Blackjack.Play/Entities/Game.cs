@@ -87,10 +87,19 @@ namespace Blackjack.Play.Entities
         {
             foreach (var player in _players)
             {
-                if(_playerCards[player].Outcome == HandOutcomes.Push)
+                if (_playerCards[player].Outcome == HandOutcomes.Push)
+                {
                     player.AwardPlayer(1);
-                if (_playerCards[player].Outcome == HandOutcomes.Winner && !_playerCards[player].IsDoubled)
+                    if(_playerCards[player].IsDoubled)
+                        player.AwardPlayer(1);
+                }
+                if (_playerCards[player].Outcome == HandOutcomes.Winner)
+                {
                     player.AwardPlayer(2);
+                    if(!_playerCards[player].IsDoubled)
+                        player.AwardPlayer(1);
+                }
+
                 if(_playerCards[player].WonBlackjack)
                     player.AwardPlayer(.5m);
             }
@@ -116,8 +125,17 @@ namespace Blackjack.Play.Entities
             foreach (var player in _players)
             {
                 var hand = _playerCards[player];
-                while (!hand.IsKilled && !hand.IsComplete(player.Strategy,_dealerHand.GetShowCard()))
+                if (!hand.IsDouble(player.Strategy, _dealerHand.GetShowCard()))
+                {
+                    while (!hand.IsKilled && !hand.IsComplete(player.Strategy, _dealerHand.GetShowCard()))
+                        hand.AddCard(_shoe.GetCardFromShoe());
+                }
+                else
+                {
+                    player.ChargePlayer(1);
+                    hand.Double();
                     hand.AddCard(_shoe.GetCardFromShoe());
+                }
                 if (hand.IsBusted())
                     hand.Kill();
             }
@@ -149,18 +167,18 @@ namespace Blackjack.Play.Entities
             {
                 player.ChargePlayer(1m);
                 var newHand = new PlayerHand();
-                newHand.AddCard(_shoe.GetCardFromShoe());
+                newHand.AddCard(_shoe.GetCardFromShoe(false,true));
                 _playerCards.Add(player, newHand);
             };
 
-            _dealerHand.AddCard(_shoe.GetCardFromShoe());
+            _dealerHand.AddCard(_shoe.GetCardFromShoe(true,true));
 
             foreach (var player in _players)
             {
-                _playerCards[player].AddCard(_shoe.GetCardFromShoe());
+                _playerCards[player].AddCard(_shoe.GetCardFromShoe(false,false));
             }
 
-            _dealerHand.AddCard(_shoe.GetCardFromShoe());
+            _dealerHand.AddCard(_shoe.GetCardFromShoe(true,false));
         }
     }
 

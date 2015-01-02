@@ -45,7 +45,7 @@ namespace Blackjack.Play.Entities
         public virtual void AwardOutcomes(int dealerCount)
         {
             if (OutcomeAssigned) return;
-            if (dealerCount > Value() || IsBusted())
+            if (dealerCount > Value() || IsBusted() || dealerCount > 21)
             {
                 Outcome = HandOutcomes.Loser;
             }
@@ -53,7 +53,7 @@ namespace Blackjack.Play.Entities
             {
                 Outcome = HandOutcomes.Push;
             }
-            else if (dealerCount < Value())
+            else if (dealerCount < Value() || dealerCount > 21)
             {
                 Outcome = HandOutcomes.Winner;
             }
