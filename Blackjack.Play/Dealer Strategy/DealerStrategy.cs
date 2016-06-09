@@ -4,4 +4,5 @@
     {
         public virtual bool HitSoftSeventeen { get { return true; } }
     }
+    
 }

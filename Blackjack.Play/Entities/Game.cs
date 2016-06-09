@@ -29,7 +29,15 @@ namespace Blackjack.Play.Entities
             _dealerStrategy = dealerStrategy;
             _players = players;
             _shoe = shoe;
+            Id = System.Guid.NewGuid();
         }
+
+        public Game(Shoe shoe, DealerStrategy dealerStrategy) : this(shoe, new List<Player>(),dealerStrategy)
+        {
+        }
+        public Guid Id { get; private set; }
+
+        
 
         public GameResult Play()
         {

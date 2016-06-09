@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Blackjack.Play.Entities
 {
+    [Serializable]
     public class GameResult
     {
         public int DecksInShoe { get; set; }
@@ -23,13 +25,9 @@ namespace Blackjack.Play.Entities
     {
         public static string CollectedOutcomes(this List<GameResult> results)
         {
-            return string.Format("Total Decks: {0}\nTotal Wins: {1}\nTotal Pushes: {2}\nTotal Losses: {3}\nTotal Win Amount: {4}\nTotal Hands: {5}\nWin Percentage: {6}", results.First().DecksInShoe, results.Sum(a=>a.TotalWins),
-                results.Sum(a => a.TotalPushes), results.Sum(a => a.TotalLosses), results.Sum(a=>a.TotalWinAmount), results.Sum(a=>a.TotalHands), CalculateWinPercentage(results));
+            return string.Format("Total Decks: {0}\nTotal Wins: {1}\nTotal Pushes: {2}\nTotal Losses: {3}\nTotal Win Amount: {4}\nTotal Hands: {5}", results.First().DecksInShoe, results.Sum(a=>a.TotalWins),
+                results.Sum(a => a.TotalPushes), results.Sum(a => a.TotalLosses), results.Sum(a=>a.TotalWinAmount), results.Sum(a=>a.TotalHands));
         }
 
-        private static string CalculateWinPercentage(List<GameResult> results)
-        {
-            return "?";
-        }
     }
 }

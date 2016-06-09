@@ -54,8 +54,6 @@ namespace Blackjack.Play.Entities
 
             return false;
 
-
-            return false;
         }
 
         public void Double()
