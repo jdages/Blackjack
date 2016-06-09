@@ -2,18 +2,25 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>Cloud Blackjack Simulator</h1>
-  
-</div>
+
 
 <div class="row">
-    @Html.TextBox("NumbersOfDecksInShoe", "1")
-    @Html.DropDownList("DealerHitsSoftSeventeen", new List<SelectListItem> {new SelectListItem() {Text = "Yes", Value = "true", Selected = true}, new SelectListItem() {Text = "No", Value = "false", Selected = true}})
-    <input type="button" id="addPlayer" value="Add Player" />
-    <input type="button" id="go" value="Run Scenario"/>
+    <div class="col-lg-3 col-md-3   col-sm-3">
+        <label>Number of Decks In Shoe</label>
+        @Html.TextBox("NumbersOfDecksInShoe", "1")
+    </div>
+    <div class="col-lg-3 col-md-3  col-sm-3">
+        <label>Dealer Hits Soft Seventeen</label>
+        @Html.DropDownList("DealerHitsSoftSeventeen", new List<SelectListItem> { new SelectListItem() { Text = "Yes", Value = "true", Selected = true }, new SelectListItem() { Text = "No", Value = "false", Selected = true } })
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <label>&nbsp;</label>
+        <input type="button" class="blue" id="addPlayer" value="Add Player" />
+        <button id="go" class="green">Go &nbsp;<i class="glyphicon glyphicon-chevron-right"></i></button>
+    </div>
 </div>
+<hr />
 <div id="players" class="container">
-    
+
 
 </div>
