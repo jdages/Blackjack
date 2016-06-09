@@ -20,6 +20,10 @@ namespace Blackjack.MVC.Controllers
             return View();
         }
 
+        public PartialViewResult AddPlayer()
+        {
+            return PartialView("Player");
+        }
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

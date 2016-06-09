@@ -4,6 +4,7 @@
             .click(function() {
                 LoadGame();
             });
+        $('#addPlayer').click(function() { AddPlayer(); });
     });
 
 function LoadGame() {
@@ -17,3 +18,11 @@ function LoadGame() {
         }
     });
 }
+
+function AddPlayer() {
+    $.ajax({
+        url: '/home/AddPlayer',
+        method: 'post'
+    }).done(function (markup) { $('#players').append(markup); });
+}
+

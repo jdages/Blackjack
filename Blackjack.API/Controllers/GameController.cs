@@ -13,25 +13,14 @@ namespace Blackjack.API.Controllers
 {
     public class GameController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
+        
         // POST api/<controller>
         public decimal Post([FromBody]CreateGameModel model)
         {
             var game = new Game(new Shoe(model.NumbersOfDecksInShoe), GetPlayers(model), GetDealerStrategy(model));
-            return 1m;
-            //   var outcomes = game.Play();
-            // return outcomes.TotalWins;
+            //return 1m;
+            var outcomes = game.Play();
+            return outcomes.TotalWins;
 
         }
 

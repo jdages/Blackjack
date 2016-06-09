@@ -8,7 +8,12 @@
 </div>
 
 <div class="row">
-    @Html.TextBox("NumbersOfDecksInShoe","1")
-    @Html.DropDownList("DealerHitsSoftSeventeen",new List<SelectListItem> {new SelectListItem() {Text="Yes",Value="true",Selected=true}, new SelectListItem() { Text = "No", Value = "false", Selected = true } })
-    <input type="button" id="go" value="Go"/>
+    @Html.TextBox("NumbersOfDecksInShoe", "1")
+    @Html.DropDownList("DealerHitsSoftSeventeen", new List<SelectListItem> {new SelectListItem() {Text = "Yes", Value = "true", Selected = true}, new SelectListItem() {Text = "No", Value = "false", Selected = true}})
+    <input type="button" id="addPlayer" value="Add Player" />
+    <input type="button" id="go" value="Run Scenario"/>
+</div>
+<div id="players" class="container">
+    
+
 </div>
