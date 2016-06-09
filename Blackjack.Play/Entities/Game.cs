@@ -3,9 +3,11 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Blackjack.Play.DbContext;
 using Blackjack.Play.Dealer_Strategy;
 
 namespace Blackjack.Play.Entities
@@ -57,8 +59,66 @@ namespace Blackjack.Play.Entities
                 ReportOutcomes();
                 ClearHands();
                 hands++;
+                Save();
             }
             return CalculateOutcomes(hands);
+        }
+
+        private void Save()
+        {
+            using (var dbContext = new BlackjackContext())
+            {
+                var game = new DbContext.Game
+                {
+                    Id = Guid.NewGuid(),
+                    DealerHitsSeventeen = this._dealerStrategy.HitSoftSeventeen,
+                    Losses = _playerLosses,
+                    NetChanges = _playerWins - _playerLosses
+                };
+
+                _players.ForEach(r =>
+                {
+                    var player = new DbContext.Player
+                    {
+                        ID = Guid.NewGuid(),
+                        Name = r.Name,
+                        Strategy = new Strategy
+                        {
+                            ID = Guid.NewGuid(),
+                            HitSoftSeventeen = r.Strategy.HitSoftSeventeen,
+                            TakesInsurance = r.Strategy.TakesInsurance
+                        }
+                    };
+
+                    game.Players.Add(player);
+                });
+                dbContext.Games.Add(game);
+
+                try
+                {
+                    dbContext.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine(
+                            "Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    throw;
+                }
+            }
+
         }
 
         private void SetBeginningBalance()
