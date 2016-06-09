@@ -29,8 +29,9 @@ namespace Blackjack.API.Controllers
         public decimal Post([FromBody]CreateGameModel model)
         {
             var game = new Game(new Shoe(model.NumbersOfDecksInShoe), GetPlayers(model), GetDealerStrategy(model));
-            var outcomes = game.Play();
-            return outcomes.TotalWins;
+            return 1m;
+            //   var outcomes = game.Play();
+            // return outcomes.TotalWins;
 
         }
 
