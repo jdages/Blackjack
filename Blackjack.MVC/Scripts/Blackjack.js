@@ -1,23 +1,56 @@
-﻿$()
-    .ready(function() {
+﻿var url = null;
+$()
+    .ready(function () {
         $('#go')
-            .click(function() {
+            .click(function () {
                 LoadGame();
             });
-        $('#addPlayer').click(function() { AddPlayer(); });
+        $('#addPlayer').click(function () { AddPlayer(); });
     });
 
 function LoadGame() {
     $.ajax({
         url: 'http://localhost:5370/api/game',
         method: 'post',
-        data:{
+        crossDomain: true,
+        data: {
             NumbersOfDecksInShoe: $('#NumbersOfDecksInShoe').val(),
             DealerHitsSoftSeventeen: $('#DealerHitsSoftSeventeen').find(':selected').val(),
-            Players:GetPlayerData()
+            Players: GetPlayerData()
         }
+    }).done(function (result) {
+        var message = '';
+        for (i = 0; i < result.length; i++) {
+            message += result[i].Name + ' won ' + (result[i].EndingBalance - result[i].StartingBalance);
+        }
+        alert(message);
     });
 }
+
+//function AddResult(result) {
+//    var outcomes = []; 
+//    for (i = 0; i < result.length; i++) {
+//        outcomes.push({
+//            Name : result[i].Name,
+//            StartingBalance: result[i].StartingBalance,
+//            EndingBalance: result[i].EndingBalance,
+//            Wins: result[i].Wins,
+//            Losses: result[i].Losses,
+//            Pushes:result[i].Pushes
+//        });
+//    }
+//    $.ajax({
+//        url: '/home/Results',
+//        method: 'post',
+//        data:outcomes
+//    }).done(function(markup) {
+//        var message = '';
+//        for (i = 0; i < markup.length; i++) {
+//            message += markup[i].Name + ' won ' + (markup.EndingBalance - markup.StartingBalance);
+//        }
+//        alert(message);
+//    });
+//}
 
 function AddPlayer() {
     $.ajax({
@@ -30,10 +63,11 @@ function GetPlayerData() {
     var playerRows = $('#players').find('.row');
     var playerData = [];
     for (i = 0; i < playerRows.length; i++) {
+        var row = $(playerRows[i]);
         playerData.push({
-            Name: $(playerRows[i]).find('#Name').val(),
-            StartingBalance: 23,
-            HitSoftSeventeen:true
+            Name: row.find('#Name').val(),
+            StartingBalance: row.find('#StartingBalance').val(),
+            HitSoftSeventeen: row.find('#HitSoftSeventeen').find(':selected').val()
         });
     }
     return playerData;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Blackjack.Play.Entities;
 
 namespace Blackjack.MVC.Controllers
 {
@@ -24,6 +25,11 @@ namespace Blackjack.MVC.Controllers
         {
             return PartialView("Player");
         }
+
+        public PartialViewResult Results(IEnumerable<ResultModel> result)
+        {
+            return PartialView("Result",result.ToList());
+        }
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
@@ -31,4 +37,5 @@ namespace Blackjack.MVC.Controllers
             return View();
         }
     }
+   
 }

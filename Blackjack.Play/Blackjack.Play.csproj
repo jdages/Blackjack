@@ -52,6 +52,7 @@
     <Compile Include="Entities\Hand.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\PlayerHand.cs" />
+    <Compile Include="Entities\ResultModel.cs" />
     <Compile Include="Entities\Shoe.cs" />
     <Compile Include="Entities\Suit.cs" />
     <Compile Include="Player Strategy\PlayerStrategy.cs" />

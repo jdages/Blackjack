@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Blackjack.API.Models;
 using Blackjack.Play.Dealer_Strategy;
 using Blackjack.Play.Entities;
@@ -11,16 +12,35 @@ using Blackjack.Play.Player_Strategy;
 
 namespace Blackjack.API.Controllers
 {
+    public class ResultModel
+    {
+        public string Name { get; set; }
+        public decimal StartingBalance { get; set; }
+        public decimal EndingBalance { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public int Pushes { get; set; }
+
+    }
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class GameController : ApiController
     {
-        
+
         // POST api/<controller>
-        public decimal Post([FromBody]CreateGameModel model)
+        public List<ResultModel> Post([FromBody]CreateGameModel model)
         {
             var game = new Game(new Shoe(model.NumbersOfDecksInShoe), GetPlayers(model), GetDealerStrategy(model));
-            //return 1m;
-            var outcomes = game.Play();
-            return outcomes.TotalWins;
+            game.Play();
+            return game.WebResults().Select(a => new ResultModel
+            {
+                StartingBalance = a.StartingBalance,
+                EndingBalance = a.EndingBalance,
+                Wins = a.Wins,
+                Losses = a.Losses,
+                Pushes = a.Pushes,
+                Name = a.Name
+
+            }).ToList();
 
         }
 
@@ -29,7 +49,8 @@ namespace Blackjack.API.Controllers
             var players = new List<Player>();
             foreach (var player in model.Players)
             {
-             var p = new Player(GetPlayerStrategy(player),player.Name,player.StartingBalance);   
+                var playerInfo = new Player(GetPlayerStrategy(player), player.Name, player.StartingBalance);
+                players.Add(playerInfo);
             }
             return players;
         }
@@ -46,7 +67,7 @@ namespace Blackjack.API.Controllers
 
         private DealerStrategy GetDealerStrategy(CreateGameModel model)
         {
-            return model.DealerHitsSoftSeventeen ? (DealerStrategy) new VegasStrategy() : new OhioStrategy();
+            return model.DealerHitsSoftSeventeen ? (DealerStrategy)new VegasStrategy() : new OhioStrategy();
         }
 
         // PUT api/<controller>/5

@@ -235,7 +235,16 @@ namespace Blackjack.Play.Entities
 
             _dealerHand.AddCard(_shoe.GetCardFromShoe(true, false));
         }
+
+        public IEnumerable<ResultModel> WebResults()
+        {
+            foreach (var player in _players)
+                yield return new ResultModel()
+                {
+                    StartingBalance = _beginningBalances[player],
+                    EndingBalance = player.BankRoll,
+                    Name = player.Name
+                };
+        }
     }
-
-
 }

@@ -1,0 +1,43 @@
+﻿@model Blackjack.Play.Entities.ResultModel
+<div id="Results">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(a => a.Name, "Name")
+                @Model.Name
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(a => a.StartingBalance, "Starting Balance")
+                @Model.StartingBalance
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(a => a.StartingBalance, "Ending Balance")
+                @Model.EndingBalance
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(a => a.StartingBalance, "Wins")
+                @Model.Wins
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(a => a.StartingBalance, "Losses")
+                @Model.Losses
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(a => a.StartingBalance, "Pushes")
+                @Model.Pushes
+            </div>
+        </div>
+    </div>
+</div>
