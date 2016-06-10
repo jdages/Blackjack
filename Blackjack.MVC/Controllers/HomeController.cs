@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Blackjack.MVC.Models;
 using Blackjack.Play.Entities;
 
 namespace Blackjack.MVC.Controllers
@@ -11,7 +13,8 @@ namespace Blackjack.MVC.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            var model = new HomeModel {ApiUrl = ConfigurationManager.AppSettings.Get("APIUrl")};
+            return View(model);
         }
 
         public ActionResult About()

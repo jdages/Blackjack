@@ -1,5 +1,4 @@
-﻿var url = null;
-$()
+﻿$()
     .ready(function () {
         $('#go')
             .click(function () {
@@ -10,7 +9,7 @@ $()
 
 function LoadGame() {
     $.ajax({
-        url: 'http://localhost:5370/api/game',
+        url: url+ '/api/game',
         method: 'post',
         crossDomain: true,
         data: {
@@ -72,3 +71,4 @@ function GetPlayerData() {
     }
     return playerData;
 }
+
