@@ -14,7 +14,7 @@ function LoadGame() {
         data:{
             NumbersOfDecksInShoe: $('#NumbersOfDecksInShoe').val(),
             DealerHitsSoftSeventeen: $('#DealerHitsSoftSeventeen').find(':selected').val(),
-            Players:[]
+            Players:GetPlayerData()
         }
     });
 }
@@ -26,3 +26,15 @@ function AddPlayer() {
     }).done(function (markup) { $('#players').append(markup); });
 }
 
+function GetPlayerData() {
+    var playerRows = $('#players').find('.row');
+    var playerData = [];
+    for (i = 0; i < playerRows.length; i++) {
+        playerData.push({
+            Name: $(playerRows[i]).find('#Name').val(),
+            StartingBalance: 23,
+            HitSoftSeventeen:true
+        });
+    }
+    return playerData;
+}

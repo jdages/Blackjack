@@ -10,19 +10,13 @@
     </div>
     <div class="col-lg-3">
         <div class="form-group">
-            @Html.LabelFor(a => a.HitSoftSeventeen, "Hit soft ")
-            @Html.TextBoxFor(a => a.HitSoftSeventeen)
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
             @Html.LabelFor(a => a.StartingBalance, "Starting Balance")
             @Html.TextBoxFor(a => a.StartingBalance)
         </div>
     </div>
     <div class="col-lg-3">
         <div class="form-group">
-            @Html.LabelFor(a => a.StartingBalance, "Hit Soft Seventeen")
+            @Html.LabelFor(a => a.StartingBalance, "Apply Card Counting")
             @Html.DropDownListFor(a => a.HitSoftSeventeen, new List<SelectListItem> {new SelectListItem() {Text = "Yes", Value = "true", Selected = true}, new SelectListItem() {Text = "No", Value = "false", Selected = true}})
         </div>
     </div>
