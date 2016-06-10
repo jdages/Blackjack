@@ -14,16 +14,17 @@ namespace Blackjack.Console
     {
         static void Main(string[] args)
         {
-            
             var allOutcomes = new List<GameResult>();
-            for (var x = 0; x < 100000; x++)
+            
+            Parallel.For(0,100000, body =>
             {
                 var shoe = new Shoe(8);
 
                 var game = new Game(shoe, new List<Player> { new Player(new TraditionalStrategy(), "Dages", 100m) },
-                    new VegasStrategy());    
+                    new VegasStrategy());
                 allOutcomes.Add(game.Play());
-            }
+            });
+            
             System.Console.WriteLine(allOutcomes.CollectedOutcomes());
             System.Console.ReadLine();
 
