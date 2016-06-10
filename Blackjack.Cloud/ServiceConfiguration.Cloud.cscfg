@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="Blackjack.Cloud" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2015-04.2.6">
+  <Role name="Blackjack.API">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=testblackjackdayof;AccountKey=MnYnFFdVCSCb5J+sAOj6SiYVjpwy44c5CguHvVFJQalff9OX3txQsQCvvZ0ev+/UAs/xIrQLfSyzeJcRTgkVvw==" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="fa" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEBNUxaEFb86GSefbQpTf+gswDQYJKoZIhvcNAQEBBQAEggEACB4IzZjbs9ul58Z5fPd2cXj6SI9XvTgvo6QWqXz1DDD5RTLj7DFPK2mWAEA7kN28DIr7vN/O0lYR9DjH976yDPpNG/faaD1dKnM5UbMQLB1KxZd74OuwP+aIa+q9oX3FFLPmehSOeRjy/PmidSQ/mr41CiT/OqZYjgVKdWzAucTaT+X3+FeW0de7FpvKEfx4i6vhrCjD2upLI0KQUdeZyJhncLOtVBoOAyzYjNjWaIm69er2/JmiHSl0Fd2pJmfjuaJLNWJJ3bv7Mz6+bYi6JnuxTe6Wd34+2efinPkNVDRkYPrQA3H1XqnLcFrX/Beam4lun4ag0u1e6r3MZK+C/DAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECLwlcqCsMW5ggBAae0HaIvdh9KmgY935R3y6" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2017-06-10T23:59:59.0000000-04:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+      <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" value="9de10a30-bc3c-4ada-b9bf-e48a098540ab" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="8B8ADDDDA40F5A7B486AB4DD2624BEE3098D26D0" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+  <Role name="Blackjack.MVC">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=testblackjackdayof;AccountKey=MnYnFFdVCSCb5J+sAOj6SiYVjpwy44c5CguHvVFJQalff9OX3txQsQCvvZ0ev+/UAs/xIrQLfSyzeJcRTgkVvw==" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="fa" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEBNUxaEFb86GSefbQpTf+gswDQYJKoZIhvcNAQEBBQAEggEACB4IzZjbs9ul58Z5fPd2cXj6SI9XvTgvo6QWqXz1DDD5RTLj7DFPK2mWAEA7kN28DIr7vN/O0lYR9DjH976yDPpNG/faaD1dKnM5UbMQLB1KxZd74OuwP+aIa+q9oX3FFLPmehSOeRjy/PmidSQ/mr41CiT/OqZYjgVKdWzAucTaT+X3+FeW0de7FpvKEfx4i6vhrCjD2upLI0KQUdeZyJhncLOtVBoOAyzYjNjWaIm69er2/JmiHSl0Fd2pJmfjuaJLNWJJ3bv7Mz6+bYi6JnuxTe6Wd34+2efinPkNVDRkYPrQA3H1XqnLcFrX/Beam4lun4ag0u1e6r3MZK+C/DAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECLwlcqCsMW5ggBAae0HaIvdh9KmgY935R3y6" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2017-06-10T23:59:59.0000000-04:00" />
+      <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" value="9de10a30-bc3c-4ada-b9bf-e48a098540ab" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="8B8ADDDDA40F5A7B486AB4DD2624BEE3098D26D0" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>
