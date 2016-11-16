@@ -13,7 +13,6 @@ using ResultModel = Blackjack.API.Models.ResultModel;
 
 namespace Blackjack.API.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class GameController : ApiController
     {
 
