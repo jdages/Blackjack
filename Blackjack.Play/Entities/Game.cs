@@ -54,7 +54,7 @@ namespace Blackjack.Play.Entities
                 DetermineOutcomes();
                 Pay();
                 CalculateIntermediateOutcomes();
-                ReportOutcomes();
+                //ReportOutcomes();
                 ClearHands();
                 hands++;
             }
@@ -132,6 +132,10 @@ namespace Blackjack.Play.Entities
             result.TotalLosses = _playerLosses;
             result.TotalPushes = _playerPushes;
             result.TotalWinAmount = _players.Sum(a => a.BankRoll);
+            foreach (var player in this._players)
+            {
+                result.PlayerOutcomes.Add(player);
+            }
             return result;
         }
 

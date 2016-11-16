@@ -9,19 +9,10 @@ using Blackjack.API.Models;
 using Blackjack.Play.Dealer_Strategy;
 using Blackjack.Play.Entities;
 using Blackjack.Play.Player_Strategy;
+using ResultModel = Blackjack.API.Models.ResultModel;
 
 namespace Blackjack.API.Controllers
 {
-    public class ResultModel
-    {
-        public string Name { get; set; }
-        public decimal StartingBalance { get; set; }
-        public decimal EndingBalance { get; set; }
-        public int Wins { get; set; }
-        public int Losses { get; set; }
-        public int Pushes { get; set; }
-
-    }
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class GameController : ApiController
     {
@@ -60,7 +51,6 @@ namespace Blackjack.API.Controllers
 
             return new PlayerStrategy
             {
-                HitSoftSeventeen = player.HitSoftSeventeen,
                 TakesInsurance = player.TakesInsurance
             };
         }

@@ -1,8 +1,10 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using Blackjack.Play.Player_Strategy;
 
 namespace Blackjack.Play.Entities
 {
+    [Serializable]
     public class Player
     {
 

@@ -1,0 +1,7 @@
+﻿@model List<Blackjack.Play.Entities.ResultModel>
+<div id="Results">
+    @foreach (var result in Model)
+    {
+        Html.RenderPartial("Result", result);
+    }
+</div>

@@ -8,6 +8,7 @@
     });
 
 function LoadGame() {
+        
     $.ajax({
         url: url+ '/api/game',
         method: 'post',
@@ -18,40 +19,22 @@ function LoadGame() {
             Players: GetPlayerData()
         }
     }).done(function (result) {
-        var message = '';
-        for (i = 0; i < result.length; i++) {
-            message += result[i].Name + ' won ' + (result[i].EndingBalance - result[i].StartingBalance);
-        }
-        alert(message);
+            $.post(
+                "/home/Results",
+                { result: result },
+                function(output) {MarkupOutput(output);}
+        );
+
     });
 }
 
-//function AddResult(result) {
-//    var outcomes = []; 
-//    for (i = 0; i < result.length; i++) {
-//        outcomes.push({
-//            Name : result[i].Name,
-//            StartingBalance: result[i].StartingBalance,
-//            EndingBalance: result[i].EndingBalance,
-//            Wins: result[i].Wins,
-//            Losses: result[i].Losses,
-//            Pushes:result[i].Pushes
-//        });
-//    }
-//    $.ajax({
-//        url: '/home/Results',
-//        method: 'post',
-//        data:outcomes
-//    }).done(function(markup) {
-//        var message = '';
-//        for (i = 0; i < markup.length; i++) {
-//            message += markup[i].Name + ' won ' + (markup.EndingBalance - markup.StartingBalance);
-//        }
-//        alert(message);
-//    });
-//}
+function MarkupOutput(output) {
+    $('.player-entry').hide();
+    $('#Results').html(output);
+}
 
 function AddPlayer() {
+    $('#Results').html('<div id="Results"> </div>');
     $.ajax({
         url: '/home/AddPlayer',
         method: 'post'

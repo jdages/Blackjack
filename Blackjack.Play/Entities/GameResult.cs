@@ -13,7 +13,12 @@ namespace Blackjack.Play.Entities
         public int TotalLosses { get; set; }
         public int TotalPushes { get; set; }
         public decimal TotalWinAmount { get; set; }
+        public List<Player> PlayerOutcomes { get; set; }
 
+        public GameResult()
+        {
+            PlayerOutcomes = new List<Player>();
+        }
         public override string ToString()
         {
             return string.Format("Total Decks: {0}\nTotal Wins: {1}\nTotal Pushes: {2}\nTotal Losses: {3}", DecksInShoe, TotalWins,

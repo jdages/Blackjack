@@ -1,8 +1,5 @@
-using System;
-
-namespace Blackjack.Play.Entities
+﻿namespace Blackjack.API.Models
 {
-    [Serializable]
     public class ResultModel
     {
         public string Name { get; set; }
@@ -11,5 +8,6 @@ namespace Blackjack.Play.Entities
         public int Wins { get; set; }
         public int Losses { get; set; }
         public int Pushes { get; set; }
+
     }
 }

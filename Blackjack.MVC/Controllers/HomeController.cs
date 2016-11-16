@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -26,12 +27,14 @@ namespace Blackjack.MVC.Controllers
 
         public PartialViewResult AddPlayer()
         {
+            var newInjury = new List<int>();
+            Contract.Ensures(newInjury != null);
             return PartialView("Player");
         }
 
         public PartialViewResult Results(IEnumerable<ResultModel> result)
         {
-            return PartialView("Result",result.ToList());
+            return PartialView("AllResults",result.ToList());
         }
         public ActionResult Contact()
         {
