@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Blackjack.API.EF;
 using Blackjack.API.Models;
 using Blackjack.Play.Dealer_Strategy;
 using Blackjack.Play.Entities;
 using Blackjack.Play.Player_Strategy;
+using Player = Blackjack.Play.Entities.Player;
 using ResultModel = Blackjack.API.Models.ResultModel;
+using Game = Blackjack.Play.Entities.Game;
 
 namespace Blackjack.API.Controllers
 {
@@ -20,7 +24,34 @@ namespace Blackjack.API.Controllers
         public List<ResultModel> Post([FromBody]CreateGameModel model)
         {
             var game = new Game(new Shoe(model.NumbersOfDecksInShoe), GetPlayers(model), GetDealerStrategy(model));
-            game.Play();
+
+            var gameResult = game.Play();
+
+            using (var context = new BlackjackContext())
+            {
+                try
+                {
+                    context.Games.Add(new EF.Game
+                    {
+                        Id = Guid.NewGuid(),
+                        DealerHitsSeventeen = model.DealerHitsSoftSeventeen,
+                        Losses = gameResult.TotalLosses,
+                        Wins = gameResult.TotalWins,
+                        NetChanges = gameResult.PlayerOutcomes.Sum(r=>r.BankRoll) - model.Players.Sum(r => r.StartingBalance),
+                        Players = gameResult.PlayerOutcomes.Select(r => new EF.Player
+                        {
+                            ID = Guid.NewGuid(),
+                            Name = r.Name,
+                            TookInsurance = r.Strategy.TakesInsurance
+                        }).ToList()
+                    });
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    throw ex;
+                }
+            }
             return game.WebResults().Select(a => new ResultModel
             {
                 StartingBalance = a.StartingBalance,
