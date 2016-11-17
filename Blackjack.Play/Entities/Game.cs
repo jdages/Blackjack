@@ -58,7 +58,6 @@ namespace Blackjack.Play.Entities
                 DetermineOutcomes();
                 Pay();
                 CalculateIntermediateOutcomes();
-                //ReportOutcomes();
                 //RecordCompleteHand();
                 ClearHands();
                 hands++;
@@ -97,21 +96,7 @@ namespace Blackjack.Play.Entities
                 _beginningBalances.Add(player, player.BankRoll);
         }
 
-        private void ReportOutcomes()
-        {
-            if (!bool.Parse(ConfigurationManager.AppSettings["WriteOutcomesToDisk"]))
-                return;
-            var sb = new StringBuilder();
-
-            sb.AppendLine("Dealer has: " + _dealerHand.CardNames());
-            _players.ForEach(a => sb.AppendLine("Player " + a.Name + " has: " + _playerCards[a].CardNames()));
-            sb.AppendLine("Dealer total: " + _dealerHand.Value());
-            _players.ForEach(a => sb.AppendLine(PrintOutcomesToConsole(a)));
-            _players.ForEach(a => sb.AppendLine(string.Format("Player {0} began with {1} and ended with {2}", a.Name, _beginningBalances[a], a.BankRoll)));
-            sb.AppendLine("----");
-            File.AppendAllText("c:\\deploy\\lol.txt", sb.ToString());
-            //            Console.Write(sb);
-        }
+        
 
         private string PrintOutcomesToConsole(Player player)
         {
