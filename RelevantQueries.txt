@@ -1,5 +1,5 @@
 select 
-	g.NetChanges,
+	cast(g.NetChanges as int) changes,
 	g.DealerHitsSeventeen,
 	p.TookInsurance
 from Game g
