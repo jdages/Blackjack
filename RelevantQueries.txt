@@ -1,0 +1,10 @@
+select 
+	g.NetChanges,
+	g.DealerHitsSeventeen,
+	p.TookInsurance
+from Game g
+join PlayerGames pg
+	on g.Id = pg.GameID
+join
+	Player p
+		on p.ID = pg.PlayerID
