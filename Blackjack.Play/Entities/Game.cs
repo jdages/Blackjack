@@ -58,7 +58,7 @@ namespace Blackjack.Play.Entities
                 DetermineOutcomes();
                 Pay();
                 CalculateIntermediateOutcomes();
-                //RecordCompleteHand();
+                RecordCompleteHand();
                 ClearHands();
                 hands++;
             }
@@ -83,11 +83,28 @@ namespace Blackjack.Play.Entities
                 }
 
             };
-
+            CreateHandDocumentIfNotExists(databaseID, workshopCollectionID, completeHand, client).Wait();
 
 
         }
-      
+        private async Task CreateHandDocumentIfNotExists(string databaseName, string collectionName, CompleteHand family, DocumentClient client)
+        {
+            try
+            {
+                await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(databaseName, collectionName, family.Id));
+            }
+            catch (DocumentClientException de)
+            {
+                if (de.StatusCode == HttpStatusCode.NotFound)
+                {
+                    await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), family);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
 
         private void SetBeginningBalance()
         {
