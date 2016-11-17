@@ -5,8 +5,12 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using Blackjack.Play.Dealer_Strategy;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
 
 namespace Blackjack.Play.Entities
 {
@@ -32,12 +36,12 @@ namespace Blackjack.Play.Entities
             Id = System.Guid.NewGuid();
         }
 
-        public Game(Shoe shoe, DealerStrategy dealerStrategy) : this(shoe, new List<Player>(),dealerStrategy)
+        public Game(Shoe shoe, DealerStrategy dealerStrategy) : this(shoe, new List<Player>(), dealerStrategy)
         {
         }
         public Guid Id { get; private set; }
 
-        
+
 
         public GameResult Play()
         {
@@ -55,17 +59,41 @@ namespace Blackjack.Play.Entities
                 Pay();
                 CalculateIntermediateOutcomes();
                 //ReportOutcomes();
+                //RecordCompleteHand();
                 ClearHands();
                 hands++;
             }
             return CalculateOutcomes(hands);
         }
 
+        private void RecordCompleteHand()
+        {
+            var EndpointUri = "https://chrisfarrell.documents.azure.com:443/";
+            var PrimaryKey = "nvhj3glRWdTC2LQXyVQ8iG6P9XrGLXQdjulepPwllv3liyvp8bQyKG6tTGVqEq8lMWTPxwqMknIKf3kduwpMMg==";
+            var client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
+            var workshopCollectionID = "WorkshopCollectionID";
+            var databaseID = "WorkshopDatabaseID";
+            //var completeHand = new CompleteHand
+            //{
+            //    Id   = System.Guid.NewGuid().ToString(),
+            //    DealerFinalHand = new DealerFinalHand()
+            //    {
+            //        DealerCards = _dealerHand.
+                   
+            //    }
+
+            //}
+
+
+
+        }
+      
+
         private void SetBeginningBalance()
         {
             _beginningBalances = new Dictionary<Player, decimal>();
             foreach (var player in _players)
-                _beginningBalances.Add(player,player.BankRoll);
+                _beginningBalances.Add(player, player.BankRoll);
         }
 
         private void ReportOutcomes()
@@ -78,7 +106,7 @@ namespace Blackjack.Play.Entities
             _players.ForEach(a => sb.AppendLine("Player " + a.Name + " has: " + _playerCards[a].CardNames()));
             sb.AppendLine("Dealer total: " + _dealerHand.Value());
             _players.ForEach(a => sb.AppendLine(PrintOutcomesToConsole(a)));
-            _players.ForEach(a=> sb.AppendLine(string.Format("Player {0} began with {1} and ended with {2}", a.Name,_beginningBalances[a],a.BankRoll)));
+            _players.ForEach(a => sb.AppendLine(string.Format("Player {0} began with {1} and ended with {2}", a.Name, _beginningBalances[a], a.BankRoll)));
             sb.AppendLine("----");
             File.AppendAllText("c:\\deploy\\lol.txt", sb.ToString());
             //            Console.Write(sb);
