@@ -20,7 +20,32 @@ namespace Blackjack.API.Controllers
     public class GameController : ApiController
     {
 
-        
+        public string Get()
+        {
+            Enumerable.Range(0, 10).ToList().ForEach(a =>
+            {
+                var model = new CreateGameModel();
+                var dealerHitsSeventeen = new Random().Next(0, 2) == 1;
+                var playerSurrenders = new Random().Next(0, 2) == 1;
+                model.DealerHitsSoftSeventeen = dealerHitsSeventeen;
+                model.NumbersOfDecksInShoe = 10;
+                model.Players = new List<PlayerModel>
+                {
+                    new PlayerModel()
+                    {
+                        Name = System.Guid.NewGuid().ToString(),
+                        StartingBalance = 100,
+                        TakesInsurance = playerSurrenders
+                    }
+                };
+                var game = new Game(new Shoe(model.NumbersOfDecksInShoe), GetPlayers(model), GetDealerStrategy(model))
+                .Play();
+                SaveGameToDatabase(model,game);
+            });
+            return "processed";
+
+        }
+
         // POST api/<controller>
         public List<ResultModel> Post([FromBody]CreateGameModel model)
         {
