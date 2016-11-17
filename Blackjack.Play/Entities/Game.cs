@@ -73,16 +73,17 @@ namespace Blackjack.Play.Entities
             var client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
             var workshopCollectionID = "WorkshopCollectionID";
             var databaseID = "WorkshopDatabaseID";
-            //var completeHand = new CompleteHand
-            //{
-            //    Id   = System.Guid.NewGuid().ToString(),
-            //    DealerFinalHand = new DealerFinalHand()
-            //    {
-            //        DealerCards = _dealerHand.
-                   
-            //    }
+            var completeHand = new CompleteHand
+            {
+                Id = System.Guid.NewGuid().ToString(),
+                DealerFinalHand = new DealerFinalHand()
+                {
+                    DealerCards =
+                        _dealerHand.Cards.Select(
+                            a => new FinalCard {Suit = a.Suit.ToString(), Value = a.Value.ToString()}).ToArray()
+                }
 
-            //}
+            };
 
 
 

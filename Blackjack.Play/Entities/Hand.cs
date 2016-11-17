@@ -7,7 +7,7 @@ namespace Blackjack.Play.Entities
 {
     public abstract class Hand
     {
-        protected List<Card> Cards = new List<Card>();
+        public List<Card> Cards = new List<Card>();
         public bool IsDoubled { get; set; }
         public bool WonBlackjack { get; set; }
         protected bool OutcomeAssigned;
