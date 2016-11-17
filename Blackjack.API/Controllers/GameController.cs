@@ -22,7 +22,7 @@ namespace Blackjack.API.Controllers
 
         public string Get()
         {
-            Enumerable.Range(0, 10).ToList().ForEach(a =>
+            Enumerable.Range(0, 1000).ToList().ForEach(a =>
             {
                 var model = new CreateGameModel();
                 var dealerHitsSeventeen = new Random().Next(0, 2) == 1;
