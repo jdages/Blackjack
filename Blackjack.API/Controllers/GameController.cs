@@ -20,6 +20,7 @@ namespace Blackjack.API.Controllers
     public class GameController : ApiController
     {
 
+        
         // POST api/<controller>
         public List<ResultModel> Post([FromBody]CreateGameModel model)
         {
@@ -27,6 +28,22 @@ namespace Blackjack.API.Controllers
 
             var gameResult = game.Play();
 
+            //SaveGameToDatabase(model, gameResult);
+            return game.WebResults().Select(a => new ResultModel
+            {
+                StartingBalance = a.StartingBalance,
+                EndingBalance = a.EndingBalance,
+                Wins = a.Wins,
+                Losses = a.Losses,
+                Pushes = a.Pushes,
+                Name = a.Name
+
+            }).ToList();
+
+        }
+
+        private static void SaveGameToDatabase(CreateGameModel model, GameResult gameResult)
+        {
             using (var context = new BlackjackContext())
             {
                 try
@@ -37,7 +54,7 @@ namespace Blackjack.API.Controllers
                         DealerHitsSeventeen = model.DealerHitsSoftSeventeen,
                         Losses = gameResult.TotalLosses,
                         Wins = gameResult.TotalWins,
-                        NetChanges = gameResult.PlayerOutcomes.Sum(r=>r.BankRoll) - model.Players.Sum(r => r.StartingBalance),
+                        NetChanges = gameResult.PlayerOutcomes.Sum(r => r.BankRoll) - model.Players.Sum(r => r.StartingBalance),
                         Players = gameResult.PlayerOutcomes.Select(r => new EF.Player
                         {
                             ID = Guid.NewGuid(),
@@ -52,17 +69,6 @@ namespace Blackjack.API.Controllers
                     throw ex;
                 }
             }
-            return game.WebResults().Select(a => new ResultModel
-            {
-                StartingBalance = a.StartingBalance,
-                EndingBalance = a.EndingBalance,
-                Wins = a.Wins,
-                Losses = a.Losses,
-                Pushes = a.Pushes,
-                Name = a.Name
-
-            }).ToList();
-
         }
 
         private List<Player> GetPlayers(CreateGameModel model)
